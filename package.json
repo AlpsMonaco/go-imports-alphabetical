@@ -12,10 +12,12 @@
   "activationEvents": [],
   "main": "./extension.js",
   "contributes": {
-    "commands": [{
-      "command": "go-imports-alphabetical.sortImportsInAlphabetical",
-      "title": "Sort Go Imports in Alphabetical"
-    }]
+    "commands": [
+      {
+        "command": "go-imports-alphabetical.sortImportsInAlphabetical",
+        "title": "Sort Go Imports in Alphabetical"
+      }
+    ]
   },
   "scripts": {
     "lint": "eslint .",
@@ -30,5 +32,8 @@
     "typescript": "^5.3.3",
     "@vscode/test-cli": "^0.0.4",
     "@vscode/test-electron": "^2.3.9"
+  },
+  "repository": {
+    "url": "github.com/AlpsMonaco/go-imports-alphabetical"
   }
 }
