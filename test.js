@@ -1,5 +1,5 @@
 const regex = new RegExp("\".+\"")
-const txt = `"git.minigame.vip/minicloud/general-user-service/api/user/v2"`
+const txt = `"xxx.xxxxx.xxxx/general-user-service/api/user/v2"`
 
 const result = txt.search(regex)
 console.log(txt.substring(result))
