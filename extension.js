@@ -17,7 +17,8 @@ function activate(context) {
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with  registerCommand
 	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('go-imports-alphabetical.sortImportsInAlphabetical', sortImportsInAlphabetical);
+	let disposable = vscode.commands.registerCommand('go-imports-alphabetical.sortImportsInAlphabetical',
+		() => { sortImportsInAlphabetical(true, true) });
 
 	context.subscriptions.push(disposable);
 }
@@ -66,11 +67,35 @@ function sortImports(ignoreImportAlias, imports) {
 	return imports.sort(compareFn)
 }
 
-function splitPackages(pendingPackages) {
-
+function parsePackages(pendingPackages) {
+	let result = []
+	let start = -1
+	let end = -1
+	for (let i = 0; i < pendingPackages.length; i++) {
+		const name = pendingPackages[i].trim()
+		if (name.length != 0) {
+			if (start == -1) {
+				start = i
+			}
+			end = i
+		} else {
+			if (start != -1) {
+				result.push([start, end + 1])
+				start = -1
+				end = -1
+			}
+		}
+	}
+	if (start != -1) {
+		result.push([start, end + 1])
+	}
+	return result
 }
 
-function sortImportsInAlphabetical() {
+// vscode.workspace.getConfiguration('goImportsAlphabetical').get("keepEmptyLine")
+// vscode.workspace.getConfiguration('goImportsAlphabetical').get("ignoreImportAlias")
+
+function sortImportsInAlphabetical(keepEmptyLine, ignoreImportAlias) {
 	try {
 		const editor = vscode.window.activeTextEditor
 		if (!editor) {
@@ -78,22 +103,26 @@ function sortImportsInAlphabetical() {
 			return
 		}
 		const document = editor.document
-		const text = document.getText()
+		let eol = document.eol == 1 ? "\n" : "\r\n"
+		let text = document.getText()
 		const matchResult = text.match(regex)
 		if (!matchResult) {
 			error("no go imports found")
 			return
 		}
-		const pendingPackages = matchResult[2].split("\n")
+		let pendingPackages = matchResult[2].split(eol)
+		pendingPackages.shift()
+		pendingPackages.pop()
 		let packages = []
-		if (vscode.workspace.getConfiguration('goImportsAlphabetical').get("keepEmptyLine")) {
-			let i = 0
-			let j = 0
-			for (i = 0; i < pendingPackages.length; i++) {
-				const tempPackageName = pendingPackages[i]
-				if (tempPackageName.trim().length == 0) {
-					const packageGroup = packages.slice(i, j)
-				}
+		if (keepEmptyLine) {
+			packages = pendingPackages
+			const packageGroupIndices = parsePackages(pendingPackages)
+			for (let i = 0; i < packageGroupIndices.length; i++) {
+				let packageTuple = packageGroupIndices[i]
+				let start = packageTuple[0]
+				let end = packageTuple[1]
+				packages.splice(start, end - start,
+					...sortImports(ignoreImportAlias, packages.slice(start, end)))
 			}
 		} else {
 			for (let i in pendingPackages) {
@@ -101,13 +130,13 @@ function sortImportsInAlphabetical() {
 				if (val.length == 0) continue
 				packages.push(pendingPackages[i])
 			}
-			packages = sortImports(vscode.workspace.getConfiguration('goImportsAlphabetical').get("ignoreImportAlias"), packages)
+			packages = sortImports(ignoreImportAlias, packages)
 		}
 		let newImportCode = matchResult[1]
-		newImportCode += "\n"
+		newImportCode += eol
 		for (let val of packages) {
 			newImportCode += val
-			newImportCode += "\n"
+			newImportCode += eol
 		}
 		newImportCode += matchResult[3]
 		const offset = text.indexOf(matchResult[1])
