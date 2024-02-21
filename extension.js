@@ -48,6 +48,28 @@ function debug(...args) {
 
 const regex = new RegExp("(import\\s*\\()([\\s\\S]+?)(\\))")
 
+function sortImports(ignoreImportAlias, imports) {
+	let compareFn = null
+	if (ignoreImportAlias) {
+		compareFn = (a, b) => {
+			let index = a.indexOf("\"")
+			a = a.substring(index)
+			index = b.indexOf("\"")
+			b = b.substring(index)
+			return a.localeCompare(b)
+		}
+	} else {
+		compareFn = (a, b) => {
+			return a.localeCompare(b)
+		}
+	}
+	return imports.sort(compareFn)
+}
+
+function splitPackages(pendingPackages) {
+
+}
+
 function sortImportsInAlphabetical() {
 	try {
 		const editor = vscode.window.activeTextEditor
@@ -64,12 +86,23 @@ function sortImportsInAlphabetical() {
 		}
 		const pendingPackages = matchResult[2].split("\n")
 		let packages = []
-		for (let i in pendingPackages) {
-			const val = pendingPackages[i].trim()
-			if (val.length == 0) continue
-			packages.push(pendingPackages[i])
+		if (vscode.workspace.getConfiguration('goImportsAlphabetical').get("keepEmptyLine")) {
+			let i = 0
+			let j = 0
+			for (i = 0; i < pendingPackages.length; i++) {
+				const tempPackageName = pendingPackages[i]
+				if (tempPackageName.trim().length == 0) {
+					const packageGroup = packages.slice(i, j)
+				}
+			}
+		} else {
+			for (let i in pendingPackages) {
+				const val = pendingPackages[i].trim()
+				if (val.length == 0) continue
+				packages.push(pendingPackages[i])
+			}
+			packages = sortImports(vscode.workspace.getConfiguration('goImportsAlphabetical').get("ignoreImportAlias"), packages)
 		}
-		packages = packages.sort()
 		let newImportCode = matchResult[1]
 		newImportCode += "\n"
 		for (let val of packages) {

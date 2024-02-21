@@ -17,7 +17,22 @@
         "command": "go-imports-alphabetical.sortImportsInAlphabetical",
         "title": "Sort Go Imports in Alphabetical"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "GoImportsAlphabetical",
+      "properties": {
+        "goImportsAlphabetical.keepEmptyLine": {
+          "type": "boolean",
+          "default": "false",
+          "description": "Whether to keep empty line or not.If enabled,all imports will be separated by empty lines,grouped into each group,then sorted within groups while keeping the empty lines."
+        },
+        "goImportsAlphabetical.ignoreImportAlias": {
+          "type": "boolean",
+          "default": "false",
+          "description": "Choose whether to sort by import package aliases.If enabled,ignore imports aliases and then sort."
+        }
+      }
+    }
   },
   "scripts": {
     "lint": "eslint .",
