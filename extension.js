@@ -17,8 +17,7 @@ function activate(context) {
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with  registerCommand
 	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('go-imports-alphabetical.sortImportsInAlphabetical',
-		() => { sortImportsInAlphabetical(true, true) });
+	let disposable = vscode.commands.registerCommand('go-imports-alphabetical.sortImportsInAlphabetical', sortImportsInAlphabeticalDefault);
 
 	context.subscriptions.push(disposable);
 }
@@ -94,6 +93,12 @@ function parsePackages(pendingPackages) {
 
 // vscode.workspace.getConfiguration('goImportsAlphabetical').get("keepEmptyLine")
 // vscode.workspace.getConfiguration('goImportsAlphabetical').get("ignoreImportAlias")
+
+function sortImportsInAlphabeticalDefault() {
+	const keepEmptyLine = vscode.workspace.getConfiguration('goImportsAlphabetical').get("keepEmptyLine")
+	const ignoreImportAlias = vscode.workspace.getConfiguration('goImportsAlphabetical').get("ignoreImportAlias")
+	sortImportsInAlphabetical(keepEmptyLine, ignoreImportAlias)
+}
 
 function sortImportsInAlphabetical(keepEmptyLine, ignoreImportAlias) {
 	try {
