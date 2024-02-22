@@ -37,7 +37,7 @@ Especially when you are going to submit you code...
 ## Extension Settings
 
 `goImportsAlphabetical.keepEmptyLine`  
-`default:true`
+`default:false`
 
 Whether to keep empty line or not.  
 If enabled,all imports will be separated by empty lines,grouped into each group,  
@@ -70,6 +70,10 @@ update extension settings.
 ### 0.0.5
 
 update Chinese documentation.
+
+### 0.0.6
+
+add variant option `Sort Go Imports in Alphabetical : keep empty line`
 
 
 ## For more information
@@ -118,7 +122,7 @@ contact me at
 ## 插件设置
 
 `goImportsAlphabetical.keepEmptyLine`  
-`default:true`
+`default:false`
 
 是否保留空行
 
@@ -149,6 +153,10 @@ contact me at
 ### 0.0.5
 
 更新中文文档
+
+### 0.0.6
+
+ 增加选项
 
 
 ## For more information

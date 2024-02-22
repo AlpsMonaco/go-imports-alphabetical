@@ -2,7 +2,7 @@
   "name": "go-imports-alphabetical",
   "displayName": "Go Imports Alphabetical",
   "description": "organize your go imports in alphabetical",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "engines": {
     "vscode": "^1.86.0"
   },
@@ -16,6 +16,10 @@
       {
         "command": "go-imports-alphabetical.sortImportsInAlphabetical",
         "title": "Sort Go Imports in Alphabetical"
+      },
+      {
+        "command": "go-imports-alphabetical.sortImportsInAlphabeticalKeepEmptyLine",
+        "title": "Sort Go Imports in Alphabetical : keep empty line"
       }
     ],
     "configuration": {
@@ -23,12 +27,12 @@
       "properties": {
         "goImportsAlphabetical.keepEmptyLine": {
           "type": "boolean",
-          "default": "false",
+          "default": false,
           "description": "Whether to keep empty line or not.If enabled,all imports will be separated by empty lines,grouped into each group,then sorted within groups while keeping the empty lines."
         },
         "goImportsAlphabetical.ignoreImportAlias": {
           "type": "boolean",
-          "default": "false",
+          "default": true,
           "description": "Choose whether to sort by import package aliases.If enabled,ignore imports aliases and then sort."
         }
       }
