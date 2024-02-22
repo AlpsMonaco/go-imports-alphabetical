@@ -2,7 +2,23 @@
 
 [中文](#Chinese)
 
-This is an Visual Studio Code Extension organize your go imports in alphabetical.  
+This is an Visual Studio Code Extension organize your go imports in alphabetical. 
+
+# Prerequisite
+
+You may need to define the following JSON settings in either user.json or workspace.json.  
+Accroding to issue: https://github.com/microsoft/vscode-go/issues/3059#issuecomment-589072036.  
+But when you import a new package,gopls will still sort you imports by `goimports`.That's why you might need this extension.    
+
+
+```json
+    "[go]": {
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "never"
+        },
+        "editor.formatOnSave": false,
+    },
+```
 
 ## Usage
 * use shortcut `Ctrl+Shift+P`
@@ -13,14 +29,25 @@ This is an Visual Studio Code Extension organize your go imports in alphabetical
 
 ## Why
 
-The Go Extension with gopls currently uses `goimports` to sort imports and it doesn't provide any interface to change that.  
-It is annoying when your Go project is maintained by both `vscode` and `goland` users due to diffierent import sort strategies.  
+The offcial Go Extension with gopls currently uses `goimports` to sort imports and it doesn't provide any interface to change that.  
+It is annoying when your Go project is maintained by both `vscode` and `goland` developers due to diffierent import sort strategies.  
 Especially when you are going to submit you code...  
 
 
 ## Extension Settings
 
-there no any extension settings currently.
+`goImportsAlphabetical.keepEmptyLine`  
+`default:true`
+
+Whether to keep empty line or not.  
+If enabled,all imports will be separated by empty lines,grouped into each group,  
+then sorted within groups while keeping the empty lines.
+
+
+`goImportsAlphabetical.ignoreImportAlias`  
+`default:true`
+
+Choose whether to sort by import package aliases.If enabled,ignore imports aliases and then sort.
 
 ## Release Notes
 
@@ -35,6 +62,10 @@ update readme.md with gif.
 ### 0.0.3
 
 update Chinese documentation.
+
+### 0.0.4
+
+update extension settings.
 
 
 ## For more information
