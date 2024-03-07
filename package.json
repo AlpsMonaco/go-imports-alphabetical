@@ -2,7 +2,7 @@
   "name": "go-imports-alphabetical",
   "displayName": "Go Imports Alphabetical",
   "description": "organize your go imports in alphabetical",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "engines": {
     "vscode": "^1.86.0"
   },
@@ -52,6 +52,7 @@
     "@vscode/test-cli": "^0.0.4",
     "@vscode/test-electron": "^2.3.9"
   },
+  "icon": "assets/golang_logo.png",
   "repository": {
     "url": "github.com/AlpsMonaco/go-imports-alphabetical"
   },
