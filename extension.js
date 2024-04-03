@@ -40,11 +40,12 @@ function error(...args) {
 }
 
 function fatal(...args) {
+	vscode.window.showErrorMessage(...args)
 	console.error(...args)
 }
 
 function debug(...args) {
-	console.log(...args)
+	if (vscode.workspace.getConfiguration('goImportsAlphabetical').get("printDebugLog")) console.log(...args)
 }
 
 const regex = new RegExp("(import\\s*\\()([\\s\\S]+?)(\\))")
@@ -122,6 +123,7 @@ function sortImportsInAlphabetical(keepEmptyLine, ignoreImportAlias) {
 			return
 		}
 		let pendingPackages = matchResult[2].split(eol)
+		debug(pendingPackages)
 		pendingPackages.shift()
 		pendingPackages.pop()
 		let packages = []
@@ -154,9 +156,13 @@ function sortImportsInAlphabetical(keepEmptyLine, ignoreImportAlias) {
 		const beginPos = document.positionAt(offset)
 		const endPos = document.positionAt(offset + matchResult[0].length)
 		const range = new vscode.Range(beginPos, endPos)
+		debug(range)
 		editor.edit((edit) => {
 			edit.replace(range, newImportCode)
-		})
+		}).then((b) => {
+			if (b) { debug("ok") }
+			else { debug("not ok") }
+		}, (reason) => { debug(reason) })
 	} catch (e) {
 		fatal(e)
 	}

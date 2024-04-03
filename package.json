@@ -2,7 +2,7 @@
   "name": "go-imports-alphabetical",
   "displayName": "Go Imports Alphabetical",
   "description": "organize your go imports in alphabetical",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "engines": {
     "vscode": "^1.86.0"
   },
@@ -34,6 +34,11 @@
           "type": "boolean",
           "default": true,
           "description": "Choose whether to sort by import package aliases.If enabled,ignore imports aliases and then sort."
+        },
+        "goImportsAlphabetical.printDebugLog": {
+          "type": "boolean",
+          "default": false,
+          "description": "for debug,print debug log"
         }
       }
     }
