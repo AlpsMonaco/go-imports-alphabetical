@@ -108,7 +108,8 @@ function sortImportsInAlphabeticalKeepEmptyLine() {
 }
 
 function trim(str) {
-	return str.replace(/^\s+|\s+$/g, '');
+	if (typeof str != 'string') return
+	return str.trim()
 }
 
 function sortImportsInAlphabetical(keepEmptyLine, ignoreImportAlias) {

@@ -2,7 +2,7 @@
   "name": "go-imports-alphabetical",
   "displayName": "Go Imports Alphabetical",
   "description": "organize your go imports in alphabetical",
-  "version": "0.0.10",
+  "version": "0.0.12",
   "engines": {
     "vscode": "^1.86.0"
   },

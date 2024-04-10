@@ -75,6 +75,15 @@ update Chinese documentation.
 
 add variant option `Sort Go Imports in Alphabetical : keep empty line`
 
+### 0.0.7 - 0.0.11
+
+* add debug log
+* trace vscode extension bug: 'trim() is not a function'
+
+### 0.0.12
+
+fix vscode extension bug: 'trim() is not a function'
+
 
 ## For more information
 
