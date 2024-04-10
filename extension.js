@@ -73,7 +73,7 @@ function parsePackages(pendingPackages) {
 	let start = -1
 	let end = -1
 	for (let i = 0; i < pendingPackages.length; i++) {
-		const name = pendingPackages[i].trim()
+		const name = trim(pendingPackages[i])
 		if (name.length != 0) {
 			if (start == -1) {
 				start = i
@@ -105,6 +105,10 @@ function sortImportsInAlphabeticalDefault() {
 function sortImportsInAlphabeticalKeepEmptyLine() {
 	const ignoreImportAlias = vscode.workspace.getConfiguration('goImportsAlphabetical').get("ignoreImportAlias")
 	sortImportsInAlphabetical(true, ignoreImportAlias)
+}
+
+function trim(str) {
+	return str.replace(/^\s+|\s+$/g, '');
 }
 
 function sortImportsInAlphabetical(keepEmptyLine, ignoreImportAlias) {
@@ -139,7 +143,7 @@ function sortImportsInAlphabetical(keepEmptyLine, ignoreImportAlias) {
 			}
 		} else {
 			for (let i in pendingPackages) {
-				const val = pendingPackages[i].trim()
+				const val = trim(pendingPackages[i])
 				if (val.length == 0) continue
 				packages.push(pendingPackages[i])
 			}
