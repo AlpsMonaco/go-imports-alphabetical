@@ -108,7 +108,7 @@ function sortImportsInAlphabeticalKeepEmptyLine() {
 }
 
 function trim(str) {
-	if (typeof str != 'string') return
+	if (typeof str != 'string') return ''
 	return str.trim()
 }
 

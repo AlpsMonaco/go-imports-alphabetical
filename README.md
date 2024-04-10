@@ -80,7 +80,7 @@ add variant option `Sort Go Imports in Alphabetical : keep empty line`
 * add debug log
 * trace vscode extension bug: 'trim() is not a function'
 
-### 0.0.12
+### 0.0.12 -  0.0.13
 
 fix vscode extension bug: 'trim() is not a function'
 
