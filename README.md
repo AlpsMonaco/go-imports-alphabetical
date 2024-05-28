@@ -27,12 +27,15 @@ But when you import a new package,gopls will still sort you imports by `goimport
 
 ![usage gif](assets/usage.gif)
 
+## NEW FEATURE
+* 2024-05-27 move to the top of the document automatically when the sort is successful.  
+Controlled by `goImportsAlphabetical.moveToTopAfterSort`
+
 ## Why
 
 The offcial Go Extension with gopls currently uses `goimports` to sort imports and it doesn't provide any interface to change that.  
 It is annoying when your Go project is maintained by both `vscode` and `goland` developers due to diffierent import sort strategies.  
 Especially when you are going to submit you code...  
-
 
 ## Extension Settings
 
@@ -48,6 +51,12 @@ then sorted within groups while keeping the empty lines.
 `default:true`
 
 Choose whether to sort by import package aliases.If enabled,ignore imports aliases and then sort.
+
+
+`goImportsAlphabetical.moveToTopAfterSort`  
+`default:true`
+
+When the sort is successful,scroll to top of the document.  
 
 ## Release Notes
 

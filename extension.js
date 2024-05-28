@@ -99,12 +99,14 @@ function parsePackages(pendingPackages) {
 function sortImportsInAlphabeticalDefault() {
 	const keepEmptyLine = vscode.workspace.getConfiguration('goImportsAlphabetical').get("keepEmptyLine")
 	const ignoreImportAlias = vscode.workspace.getConfiguration('goImportsAlphabetical').get("ignoreImportAlias")
-	sortImportsInAlphabetical(keepEmptyLine, ignoreImportAlias)
+	const scrollToTop = vscode.workspace.getConfiguration('goImportsAlphabetical').get("moveToTopAfterSort")
+	sortImportsInAlphabetical(keepEmptyLine, ignoreImportAlias, scrollToTop)
 }
 
 function sortImportsInAlphabeticalKeepEmptyLine() {
 	const ignoreImportAlias = vscode.workspace.getConfiguration('goImportsAlphabetical').get("ignoreImportAlias")
-	sortImportsInAlphabetical(true, ignoreImportAlias)
+	const scrollToTop = vscode.workspace.getConfiguration('goImportsAlphabetical').get("moveToTopAfterSort")
+	sortImportsInAlphabetical(true, ignoreImportAlias, scrollToTop)
 }
 
 function trim(str) {
@@ -112,7 +114,7 @@ function trim(str) {
 	return str.trim()
 }
 
-function sortImportsInAlphabetical(keepEmptyLine, ignoreImportAlias) {
+function sortImportsInAlphabetical(keepEmptyLine, ignoreImportAlias, scrollToTop) {
 	try {
 		const editor = vscode.window.activeTextEditor
 		if (!editor) {
@@ -164,6 +166,12 @@ function sortImportsInAlphabetical(keepEmptyLine, ignoreImportAlias) {
 		debug(range)
 		editor.edit((edit) => {
 			edit.replace(range, newImportCode)
+			if (scrollToTop) {
+				const startPosition = new vscode.Position(0, 0)
+				const newSelection = new vscode.Selection(startPosition, startPosition)
+				editor.selection = newSelection
+				editor.revealRange(new vscode.Range(startPosition, startPosition), vscode.TextEditorRevealType.AtTop)
+			}
 		}).then((b) => {
 			if (b) { debug("ok") }
 			else { debug("not ok") }

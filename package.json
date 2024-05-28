@@ -2,7 +2,7 @@
   "name": "go-imports-alphabetical",
   "displayName": "Go Imports Alphabetical",
   "description": "organize your go imports in alphabetical",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "engines": {
     "vscode": "^1.86.0"
   },
@@ -39,6 +39,11 @@
           "type": "boolean",
           "default": false,
           "description": "for debug,print debug log"
+        },
+        "goImportsAlphabetical.moveToTopAfterSort": {
+          "type": "boolean",
+          "default": true,
+          "description": "move to top of document when sort is successful"
         }
       }
     }
