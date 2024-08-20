@@ -1,38 +1,18 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 const vscode = require('vscode');
+const { execSync } = require('child_process');
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
-
-/**
- * @param {vscode.ExtensionContext} context
- */
 function activate(context) {
-
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	// console.log('Congratulations, your extension "go-imports-alphabetical" is now active!');
-
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with  registerCommand
-	// The commandId parameter must match the command field in package.json
 	context.subscriptions.push(vscode.commands.registerCommand('go-imports-alphabetical.sortImportsInAlphabetical',
 		sortImportsInAlphabeticalDefault))
 	context.subscriptions.push(vscode.commands.registerCommand('go-imports-alphabetical.sortImportsInAlphabeticalKeepEmptyLine',
 		sortImportsInAlphabeticalKeepEmptyLine))
+	vscode.languages.registerDocumentFormattingEditProvider('go', {
+		provideDocumentFormattingEdits: formatter
+	})
 }
 
 // This method is called when your extension is deactivated
 function deactivate() { }
-
-function info(...args) {
-	vscode.window.showInformationMessage(...args)
-}
-
-function warn(...args) {
-	vscode.window.showWarningMessage(...args)
-}
 
 function error(...args) {
 	vscode.window.showErrorMessage(...args)
@@ -93,9 +73,6 @@ function parsePackages(pendingPackages) {
 	return result
 }
 
-// vscode.workspace.getConfiguration('goImportsAlphabetical').get("keepEmptyLine")
-// vscode.workspace.getConfiguration('goImportsAlphabetical').get("ignoreImportAlias")
-
 function sortImportsInAlphabeticalDefault() {
 	const keepEmptyLine = vscode.workspace.getConfiguration('goImportsAlphabetical').get("keepEmptyLine")
 	const ignoreImportAlias = vscode.workspace.getConfiguration('goImportsAlphabetical').get("ignoreImportAlias")
@@ -112,6 +89,72 @@ function sortImportsInAlphabeticalKeepEmptyLine() {
 function trim(str) {
 	if (typeof str != 'string') return ''
 	return str.trim()
+}
+
+function formatter(document) {
+	const keepEmptyLine = vscode.workspace.getConfiguration('goImportsAlphabetical').get("keepEmptyLine")
+	const ignoreImportAlias = vscode.workspace.getConfiguration('goImportsAlphabetical').get("ignoreImportAlias")
+	const preformatTool = vscode.workspace.getConfiguration('goImportsAlphabetical').get("preformatTool")
+	try {
+		let text = null
+		try {
+			text = execSync(`${preformatTool}`, { input: document.getText() }).toString()
+		} catch (e) {
+			error(`error running ${preformatTool}:\n` + e)
+			return
+		}
+		let eol = document.eol == 1 ? "\n" : "\r\n"
+		const matchResult = text.match(regex)
+		if (!matchResult) {
+			return [
+				vscode.TextEdit.replace(
+					new vscode.Range(document.positionAt(0), document.positionAt(document.getText().length)),
+					text,
+				)
+			]
+		}
+		let pendingPackages = matchResult[2].split(eol)
+		pendingPackages.shift()
+		pendingPackages.pop()
+		let packages = []
+		if (keepEmptyLine) {
+			packages = pendingPackages
+			const packageGroupIndices = parsePackages(pendingPackages)
+			for (let i = 0; i < packageGroupIndices.length; i++) {
+				let packageTuple = packageGroupIndices[i]
+				let start = packageTuple[0]
+				let end = packageTuple[1]
+				packages.splice(start, end - start,
+					...sortImports(ignoreImportAlias, packages.slice(start, end)))
+			}
+		} else {
+			for (let i in pendingPackages) {
+				const val = trim(pendingPackages[i])
+				if (val.length == 0) continue
+				packages.push(pendingPackages[i])
+			}
+			packages = sortImports(ignoreImportAlias, packages)
+		}
+		let newImportCode = matchResult[1]
+		newImportCode += eol
+		for (let val of packages) {
+			newImportCode += val
+			newImportCode += eol
+		}
+		newImportCode += matchResult[3]
+		const offset = text.indexOf(matchResult[1])
+		let temp = text.substring(0, offset)
+		temp += newImportCode
+		temp += text.substring(offset + matchResult[0].length)
+		return [
+			vscode.TextEdit.replace(
+				new vscode.Range(document.positionAt(0), document.positionAt(document.getText().length)),
+				temp,
+			)
+		]
+	} catch (e) {
+		fatal(e)
+	}
 }
 
 function sortImportsInAlphabetical(keepEmptyLine, ignoreImportAlias, scrollToTop) {
@@ -159,6 +202,7 @@ function sortImportsInAlphabetical(keepEmptyLine, ignoreImportAlias, scrollToTop
 			newImportCode += eol
 		}
 		newImportCode += matchResult[3]
+		text.replace()
 		const offset = text.indexOf(matchResult[1])
 		const beginPos = document.positionAt(offset)
 		const endPos = document.positionAt(offset + matchResult[0].length)

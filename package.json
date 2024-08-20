@@ -2,14 +2,17 @@
   "name": "go-imports-alphabetical",
   "displayName": "Go Imports Alphabetical",
   "description": "organize your go imports in alphabetical",
-  "version": "0.0.14",
+  "version": "0.0.21",
   "engines": {
     "vscode": "^1.86.0"
   },
   "categories": [
-    "Other"
+    "Other",
+    "Formatters"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onLanguage:go"
+  ],
   "main": "./extension.js",
   "contributes": {
     "commands": [
@@ -44,6 +47,11 @@
           "type": "boolean",
           "default": true,
           "description": "move to top of document when sort is successful"
+        },
+        "goImportsAlphabetical.preformatTool": {
+          "type": "string",
+          "default": "gofmt",
+          "description": "define preformat tool,by default it is gofmt.Sorting imports alphabetical will be executed after preformat tool is executed"
         }
       }
     }

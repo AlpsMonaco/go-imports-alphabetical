@@ -2,10 +2,47 @@
 
 [中文](#Chinese)
 
-This is an Visual Studio Code Extension organize your go imports in alphabetical. 
+This Visual Studio Code extension organizes your Go imports alphabetically.
+
+![usage2 gif](assets/usage2.gif)
+
+## NEW FEATURE!!!🎉🎉🎉
+This extension can now be configured as a formatter!!!
+add the following JSON settings to your `settings.json` file (either globally or in your workspace):  
+```json
+"[go]": {
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": "never"
+    },
+    "editor.defaultFormatter": "alpsmonaco.go-imports-alphabetical",
+    "editor.formatOnSave": true, //optional
+}
+```
+By default, this extension will run `gofmt` to format your currently open Go file and then sort all imports in alphabetical order.  
+The `gofmt` tool is included with your Go installation.
+If you'd like to use a different formatting tool instead of gofmt, you can specify it in your settings:
+```json
+{
+    "goImportsAlphabetical.preformatTool": "goimports"
+}
+```
+
+as a formatter, you could use the following methods to format go files.
+* use shortcut `Shift+Alt+F`
+* use shortcut `Ctrl+Shift+P` and the choose `Format Document`
+
+
+# Why Use This Extension?
+The official Go Extension with gopls currently uses goimports to sort imports, and it doesn’t provide an option to change this behavior.  
+This can be frustrating when your Go project is maintained by both Visual Studio Code and GoLand developers, as they may use different import sorting strategies.  
+This difference can lead to unwanted changes, especially when you are about to submit your code.
+
+
+# NOTICE
+If this extension formats your Go file correctly, you’re all set!   
+You don’t need to read any further—just start coding in Go.
 
 # Prerequisite
-
 You may need to define the following JSON settings in either user.json or workspace.json.  
 Accroding to issue: https://github.com/microsoft/vscode-go/issues/3059#issuecomment-589072036.  
 But when you import a new package,gopls will still sort you imports by `goimports`.That's why you might need this extension.    
@@ -27,15 +64,7 @@ But when you import a new package,gopls will still sort you imports by `goimport
 
 ![usage gif](assets/usage.gif)
 
-## NEW FEATURE
-* 2024-05-27 move to the top of the document automatically when the sort is successful.  
-Controlled by `goImportsAlphabetical.moveToTopAfterSort`
 
-## Why
-
-The offcial Go Extension with gopls currently uses `goimports` to sort imports and it doesn't provide any interface to change that.  
-It is annoying when your Go project is maintained by both `vscode` and `goland` developers due to diffierent import sort strategies.  
-Especially when you are going to submit you code...  
 
 ## Extension Settings
 
