@@ -87,41 +87,6 @@ Choose whether to sort by import package aliases.If enabled,ignore imports alias
 
 When the sort is successful,scroll to top of the document.  
 
-## Release Notes
-
-### 0.0.1
-
-organize go imports function works properly.
-
-### 0.0.2
-
-update readme.md with gif.
-
-### 0.0.3
-
-update Chinese documentation.
-
-### 0.0.4
-
-update extension settings.
-
-### 0.0.5
-
-update Chinese documentation.
-
-### 0.0.6
-
-add variant option `Sort Go Imports in Alphabetical : keep empty line`
-
-### 0.0.7 - 0.0.11
-
-* add debug log
-* trace vscode extension bug: 'trim() is not a function'
-
-### 0.0.12 -  0.0.13
-
-fix vscode extension bug: 'trim() is not a function'
-
 
 ## For more information
 
@@ -134,6 +99,39 @@ contact me at
 <a id="Chinese"></a>
 
 这个插件帮助你把 go 的导入包按字母顺序排序
+
+![usage2 gif](assets/usage2.gif)
+
+## 新功能!!!🎉🎉🎉
+
+这个插件现在可以配置成格式化插件来使用
+
+添加下面的json配置到 `settings.json` 中来生效（vscode的全局设置或者工作区设置都可以）
+```json
+"[go]": {
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": "never"
+    },
+    "editor.defaultFormatter": "alpsmonaco.go-imports-alphabetical",
+    "editor.formatOnSave": true, //optional
+}
+```
+默认情况下这个插件会先用gofmt格式化你的Go代码，然后将导入的包按字母顺序来排序。  
+一般安装Go的时候，gofmt也会自带。  
+你也可以通过以下的设置来使用其他格式化工具来进行预格式化。  
+```json
+{
+    "goImportsAlphabetical.preformatTool": "goimports"
+}
+```
+
+你可以使用以下方法来进行格式化，排序Go的导入包。  
+* 使用快捷键 `Shift+Alt+F`
+* 使用快捷键 `Ctrl+Shift+P` 然后选择 `格式化文档`
+
+## 注意
+如果你能成功格式化，后面的内容就不用看了。  
+
 
 # 先决配置
 
@@ -178,32 +176,6 @@ contact me at
 `default:true`
 
 包的别名是否参与排序
-
-## Release Notes
-
-### 0.0.1
-
-测试核心功能工作正常
-
-### 0.0.2
-
-增加gif用例
-
-### 0.0.3
-
-添加中文文档
-
-### 0.0.4
-
-更新插件设置
-
-### 0.0.5
-
-更新中文文档
-
-### 0.0.6
-
- 增加选项
 
 
 ## For more information
