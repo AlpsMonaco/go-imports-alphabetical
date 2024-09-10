@@ -15,7 +15,7 @@ function activate(context) {
 function deactivate() { }
 
 function error(...args) {
-	vscode.window.showErrorMessage(...args)
+	// vscode.window.showErrorMessage(...args)
 	console.error(...args)
 }
 
