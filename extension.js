@@ -103,7 +103,7 @@ function formatter(document) {
 			error(`error running ${preformatTool}:\n` + e)
 			return
 		}
-		let eol = document.eol == 1 ? "\n" : "\r\n"
+		let eol = "\n"
 		const matchResult = text.match(regex)
 		if (!matchResult) {
 			return [
